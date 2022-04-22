@@ -15,8 +15,8 @@ function Home({ yourLocalBalance, readContracts, address }) {
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
   console.log("address in home", address);
-  const ens = useEnsDomains(address);
-  console.log(ens);
+  const { domains, loadingState } = useEnsDomains(address);
+  console.log(domains, loadingState);
   return (
     <div>
       <div style={{ margin: 32 }}>
