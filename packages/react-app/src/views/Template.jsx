@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Address, Balance, Events } from "../components";
+import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
 
 const OuterContainer = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ const ProfilePicContainer = styled.div`
 `;
 
 const PicBackgroundTop = styled.div`
-  background: linear-gradient(111.35deg, #4368EA -25.85%, #C490DD 73.38%);
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   opacity: 0.8;
   border-radius: 0px 0px 200px 200px;
   height: 188px;
@@ -36,7 +37,7 @@ const ProfilePic = styled.div`
   background-image: url("stani-test.png");
   background-position: center, center;
   background-size: cover;
-  border: 8px solid #FFFFFF;
+  border: 8px solid #ffffff;
   border-radius: 200px;
   height: 250px;
   width: 250px;
@@ -46,7 +47,7 @@ const ProfilePic = styled.div`
 
 const ProfileName = styled.div`
   display: flex;
-  font-family: 'Baloo 2';
+  font-family: "Baloo 2";
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
@@ -60,7 +61,7 @@ const ProfileName = styled.div`
 
 const AddressBar = styled.div`
   margin-top: 26px;
-  font-family: 'Baloo 2';
+  font-family: "Baloo 2";
   font-style: normal;
   font-weight: 600;
   font-size: 22px;
@@ -83,11 +84,11 @@ const ETHAddress = styled.div`
   text-align: center;
   font-weight: 400;
   /* Blue 1 */
-  color: #2F80ED;
+  color: #2f80ed;
 `;
 
 const ProfileDesc = styled.div`
-  font-family: 'Baloo 2';
+  font-family: "Baloo 2";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -96,22 +97,26 @@ const ProfileDesc = styled.div`
   align-items: left;
   margin: 25px 37px;
 `;
-
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
 const ContentListTile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 38px 36px;
-  background: #FFFFFF;
-  box-shadow: 0px 8px 35px #E9E0FF;
+  background: #ffffff;
+  box-shadow: 0px 8px 35px #e9e0ff;
   border-radius: 25px;
   width: 300px;
   margin-bottom: 40px;
 `;
 
 const TitleElement = styled.div`
-  font-family: 'Baloo 2';
+  font-family: "Baloo 2";
   font-style: normal;
   font-weight: 500;
   font-size: 28px;
@@ -120,64 +125,143 @@ const TitleElement = styled.div`
 
 const LineItemElement = styled.div`
   display: flex;
-  font-family: 'Baloo 2';
+  font-family: "Baloo 2";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 100%;
   align-items: center;
-  color: #2F80ED;
+  color: #2f80ed;
 `;
 
 const Footer = styled.div`
-  background: linear-gradient(111.35deg, #4368EA -25.85%, #C490DD 73.38%);
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   opacity: 0.8;
   border-radius: 0px 0px 200px 200px;
   transform: rotate(-180deg);
   width: 375px;
   height: 75px;
 `;
+const LeftSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
 
-export default function ExampleUI({ link, title}) {
-  const [newPurpose, setNewPurpose] = useState("loading...");
+  position: static;
+  width: 413px;
+  height: 292px;
+  left: 0px;
+  top: 0px;
+
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 5px 24px rgba(138, 143, 234, 0.12);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 25px;
+`;
+const TwitterArea = styled.div`
+  display: flex;
+`;
+const TwitterText = styled.div`
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 130%;
+  margin-left: 18px;
+  /* or 29px */
+  text-align: left;
+
+  display: flex;
+  align-items: center;
+
+  /* gradient */
+
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+`;
+const StyledInput = styled.input`
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  box-shadow: 0px 12px 23px rgba(55, 125, 255, 0.06);
+  border-radius: 15px;
+  border: 1.5px solid;
+  height: 58px;
+  padding: 20px;
+  border-image-source: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+`;
+const StyledButton = styled.button`
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 25px;
+  /* left: 1143px;
+  top: 27px; */
+  font-family: "Baloo 2";
+  font-size: 18px;
+  color: #ffffff !important;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0em;
+  display: flex;
+  border: transparent;
+
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+  border-radius: 30px;
+
+  /* gradient */
+
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+  border-radius: 30px;
+`;
+export default function ExampleUI({ link, title }) {
+  const [input, setInput] = useState("");
+
   return (
-    <OuterContainer>
-      <ProfileContainer>
-        <ProfilePicContainer>
-          <PicBackgroundTop/>
-          <ProfilePic/>
-        </ProfilePicContainer>
-        <ProfileName>
-          Stani.eth (3,3)
-        </ProfileName>
-        <AddressBar>
-          stani.eth
-          <VerticalSeparator>|</VerticalSeparator>
-          <ETHAddress>0x52...D4D4</ETHAddress>
-        </AddressBar>
-        <ProfileDesc>
-          Founder @LensProtocol @AaveAaave web3 
-          investoooorrr - Contributor to @PleasrDAO
-          @FlamingoDAO @VENTURE_DAO - Opinions my own - Google 1998 vibes
-        </ProfileDesc>
-        <ContentListTile>
-          <TitleElement>
-            Socials
-          </TitleElement>
-          <LineItemElement>
-            Stani Kuchelov
-          </LineItemElement>
-        </ContentListTile>
-        <ContentListTile>
-          <TitleElement>
-            Addresses
-          </TitleElement>
-          <LineItemElement>
-            0x477d239...ba36917649
-          </LineItemElement>
-        </ContentListTile>
-        <Footer/>
-      </ProfileContainer>
-    </OuterContainer>
+    <Wrapper>
+      <LeftSide>
+        <TwitterArea>
+          <TwitterLogo />
+          <TwitterText>
+            Import Data from <br /> Twitter Profile
+          </TwitterText>
+        </TwitterArea>
+        <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
+        <StyledButton>Import from Twitter</StyledButton>
+      </LeftSide>
+      <OuterContainer>
+        <ProfileContainer>
+          <ProfilePicContainer>
+            <PicBackgroundTop />
+            <ProfilePic />
+          </ProfilePicContainer>
+          <ProfileName>Stani.eth (3,3)</ProfileName>
+          <AddressBar>
+            stani.eth
+            <VerticalSeparator>|</VerticalSeparator>
+            <ETHAddress>0x52...D4D4</ETHAddress>
+          </AddressBar>
+          <ProfileDesc>
+            Founder @LensProtocol @AaveAaave web3 investoooorrr - Contributor to @PleasrDAO @FlamingoDAO @VENTURE_DAO -
+            Opinions my own - Google 1998 vibes
+          </ProfileDesc>
+          <ContentListTile>
+            <TitleElement>Socials</TitleElement>
+            <LineItemElement>Stani Kuchelov</LineItemElement>
+          </ContentListTile>
+          <ContentListTile>
+            <TitleElement>Addresses</TitleElement>
+            <LineItemElement>0x477d239...ba36917649</LineItemElement>
+          </ContentListTile>
+          <Footer />
+        </ProfileContainer>
+      </OuterContainer>
+    </Wrapper>
   );
 }
