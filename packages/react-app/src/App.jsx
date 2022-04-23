@@ -301,7 +301,7 @@ function App(props) {
       </Menu> */}
 
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/app">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
           <Home
             userSigner={userSigner}
@@ -335,7 +335,7 @@ function App(props) {
             price={price}
           />
         </Route>
-        <Route path="/landing">
+        <Route path="/">
           <Landing
             address={address}
             userSigner={userSigner}
