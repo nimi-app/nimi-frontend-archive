@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import useEnsDomains from "../hooks/useEnsDomains";
 import styled from "styled-components";
+import { NavLink, useHistory } from "react-router-dom";
 const FlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -113,10 +114,10 @@ const abi = [
 function Home({ address, userSigner }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
-
+  const history = useHistory();
   console.log("address in home", address);
   const { domains, loadingState } = useEnsDomains(address);
-  const [selectedDomain, setSelectedDomain] = useState(null);
+
   const handleClick = ens => {
     window.open(`https://${ens}.link`);
   };
@@ -129,7 +130,19 @@ function Home({ address, userSigner }) {
             return (
               <StyledCard>
                 <StyledDomainText>{item.name}</StyledDomainText>
-                <SetupButton>Set up a Nimi Profile</SetupButton>
+                {/* <NavLink to={`/template-preview/id:${item.name}`}> */}
+                <SetupButton
+                  onClick={() =>
+                    history.push({
+                      pathname: "/template-preview",
+                      search: `${item.name}`,
+                    })
+                  }
+                >
+                  Set up a Nimi Profile
+                </SetupButton>
+                {/* </NavLink> */}
+
                 <GoToText onClick={() => handleClick(item.name)}>Go to {item.name}</GoToText>
               </StyledCard>
             );

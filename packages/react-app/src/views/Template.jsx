@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import contentHash from "content-hash";
 import { Address, Balance, Events } from "../components";
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
+import { fetchTwitterData } from "../hooks/TwitterData";
 
 const abi = [
   {
@@ -237,15 +238,20 @@ const StyledButton = styled.button`
   background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   border-radius: 30px;
 `;
-export default function ExampleUI({ userSigner, title }) {
+
+export default function Template({ userSigner, title }) {
   const [input, setInput] = useState("");
-  const [domain, setDomain] = useState("");
+
   const asyncFunc = async () => {
     console.log("user signer", userSigner);
 
     const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
     // console.log("hash", nameHash.hash(domains[1].name));
-    const node = nameHash.hash(domain);
+    let urlSearchParams = window.location.search.substring(1);
+    console.log("search", urlSearchParams);
+
+    console.log("foo", urlSearchParams);
+    const node = nameHash.hash(urlSearchParams.substring(1));
     const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
     console.log("ipfscontentHash", ipfsContentHash);
     await contract.setContenthash(node, "0x" + ipfsContentHash);
@@ -261,7 +267,7 @@ export default function ExampleUI({ userSigner, title }) {
           </TwitterText>
         </TwitterArea>
         <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
-        <StyledButton>Import from Twitter</StyledButton>
+        <StyledButton onClick={() => fetchTwitterData()}>Import from Twitter</StyledButton>
         <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>
       </LeftSide>
       <OuterContainer>
