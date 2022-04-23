@@ -6,7 +6,28 @@ import { useLookupAddress } from "eth-hooks/dapps/ens";
 
 // changed value={address} to address={address}
 
-const StyledAddress = styled.div``;
+const StyledAddress = styled.div`
+  align-items: center;
+  justify-content: space-around;
+
+  /* left: 1143px;
+  top: 27px; */
+  font-family: "Baloo 2";
+  font-size: 12px;
+  a {
+    background: linear-gradient(154.32deg, #4368ea 0.48%, #c490dd 85.86%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0em;
+  display: flex;
+  border: transparent;
+`;
 /** 
   ~ What it does? ~
 
@@ -68,22 +89,20 @@ export default function Address(props) {
   }
 
   return (
-    <span>
-      <span style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
-        {props.onChange ? (
-          <StyledAddress editable={{ onChange: props.onChange }} copyable={{ text: address }}>
-            <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
-              {displayAddress}
-            </a>
-          </StyledAddress>
-        ) : (
-          <StyledAddress copyable={{ text: address }}>
-            <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
-              {displayAddress}
-            </a>
-          </StyledAddress>
-        )}
-      </span>
-    </span>
+    <>
+      {props.onChange ? (
+        <StyledAddress editable={{ onChange: props.onChange }} copyable={{ text: address }}>
+          <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
+            {displayAddress}
+          </a>
+        </StyledAddress>
+      ) : (
+        <StyledAddress copyable={{ text: address }}>
+          <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
+            {displayAddress}
+          </a>
+        </StyledAddress>
+      )}
+    </>
   );
 }

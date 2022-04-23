@@ -62,6 +62,10 @@ const ConnectButton = styled.button`
   background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   border-radius: 30px;
 `;
+const AccountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 export default function Account({
   useBurner,
   address,
@@ -111,23 +115,13 @@ export default function Account({
   ) : (
     <div>
       {web3Modal && web3Modal.cachedProvider ? (
-        <>
-          {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
-          {/* <Balance address={address} provider={localProvider} price={price} /> */}
-          <Wallet
-            address={address}
-            provider={localProvider}
-            signer={userSigner}
-            ensProvider={mainnetProvider}
-            price={price}
-            color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          />
-        </>
+        <>{address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}</>
       ) : useBurner ? (
         ""
       ) : isContract ? (
         <>
           {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
+
           <Balance address={address} provider={localProvider} price={price} />
         </>
       ) : (
@@ -136,6 +130,7 @@ export default function Account({
       {useBurner && web3Modal && !web3Modal.cachedProvider ? (
         <>
           <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
+
           <Balance address={address} provider={localProvider} price={price} />
           <Wallet
             address={address}
@@ -153,9 +148,9 @@ export default function Account({
   );
 
   return (
-    <div>
+    <AccountWrapper>
       {display}
       {modalButtons}
-    </div>
+    </AccountWrapper>
   );
 }
