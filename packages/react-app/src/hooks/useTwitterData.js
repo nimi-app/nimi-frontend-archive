@@ -4,17 +4,21 @@ import { useState } from "react";
 
 export default function useTwitterData(userId) {
   const [twitterData, setTwitterData] = useState();
+  const [loading, setLoading] = useState(false);
+  const loadTwitterData = async () => {
+    setLoading(true);
 
-  const loadGasPrice = async () => {
     await axios
       .get(`https://api.nimi.dev/twitter-info?username=${userId}`)
       .then(response => {
-        setTwitterData(response.data);
+        setTwitterData(response.data.data);
+        setLoading(false);
       })
       .catch(error => {
+        setLoading(true);
         console.log(error);
       });
   };
-  loadGasPrice();
-  return twitterData;
+
+  return { loadTwitterData, twitterData, loading };
 }

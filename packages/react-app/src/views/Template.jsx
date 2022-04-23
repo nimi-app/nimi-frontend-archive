@@ -6,6 +6,7 @@ import contentHash from "content-hash";
 import { Address, Balance, Events } from "../components";
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
 import useTwitterData from "../hooks/useTwitterData";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const abi = [
   {
@@ -241,7 +242,7 @@ const StyledButton = styled.button`
 
 export default function Template({ userSigner, title }) {
   const [input, setInput] = useState("");
-  const twitterData = useTwitterData(input);
+  const { loadTwitterData, twitterData, loading } = useTwitterData(input);
   console.log(twitterData);
   const asyncFunc = async () => {
     console.log("user signer", userSigner);
@@ -268,8 +269,8 @@ export default function Template({ userSigner, title }) {
           </TwitterText>
         </TwitterArea>
         <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
-        <StyledButton>Import from Twitter</StyledButton>
-        <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>
+        <StyledButton onClick={loadTwitterData}>Import from Twitter</StyledButton>
+        {loading && twitterData !== undefined && <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>}
       </LeftSide>
       <OuterContainer>
         <ProfileContainer>
