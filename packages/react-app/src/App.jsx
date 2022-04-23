@@ -246,6 +246,7 @@ function App(props) {
         loadWeb3Modal={loadWeb3Modal}
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         blockExplorer={blockExplorer}
+        location={location}
       />
 
       {/* <Menu style={{ textAlign: "center", marginTop: 40 }} selectedKeys={[location.pathname]} mode="horizontal">

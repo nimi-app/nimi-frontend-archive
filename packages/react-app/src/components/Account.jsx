@@ -84,19 +84,17 @@ export default function Account({
 
   const modalButtons = [];
   if (web3Modal) {
-    if (web3Modal.cachedProvider) {
-      modalButtons.push(
-        <ConnectButton
-          key="logoutbutton"
-          style={{ width: "100px;" }}
-          shape="round"
-          size="large"
-          onClick={logoutOfWeb3Modal}
-        >
-          Logout
-        </ConnectButton>,
-      );
-    } else {
+    if (!web3Modal.cachedProvider) {
+      // modalButtons.push(
+      //   <ConnectButton
+      //     key="logoutbutton"
+      //     style={{ width: "100px;" }}
+      //     shape="round"
+      //     size="large"
+      //     onClick={logoutOfWeb3Modal}
+      //   >
+      //     Logout
+      //   </ConnectButton>,
       modalButtons.push(
         <ConnectButton
           key="loginbutton"
