@@ -6,7 +6,43 @@ import { useLookupAddress } from "eth-hooks/dapps/ens";
 
 // changed value={address} to address={address}
 
-const StyledAddress = styled.div``;
+const Avatar = styled.div`
+  /* height: 32;
+  width: 32; */
+  border-radius: "50%";
+  /* margin-right: 6;
+  margin-left: -14; */
+  background-color: white;
+  background-size: cover;
+  background-image: url("../images/nimi-small.svg");
+`;
+
+const StyledAddress = styled.div`
+  align-items: center;
+  justify-content: space-around;
+  height: 42px;
+
+  font-family: "Baloo 2";
+  font-size: 12px;
+  a {
+    color: white;
+    font-family: Baloo 2;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0em;
+    /* text-align: left; */
+  }
+  padding: 11px;
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+  border-radius: 50px;
+
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0em;
+  display: flex;
+  border: transparent;
+`;
 /** 
   ~ What it does? ~
 
@@ -68,22 +104,20 @@ export default function Address(props) {
   }
 
   return (
-    <span>
-      <span style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
-        {props.onChange ? (
-          <StyledAddress editable={{ onChange: props.onChange }} copyable={{ text: address }}>
-            <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
-              {displayAddress}
-            </a>
-          </StyledAddress>
-        ) : (
-          <StyledAddress copyable={{ text: address }}>
-            <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
-              {displayAddress}
-            </a>
-          </StyledAddress>
-        )}
-      </span>
-    </span>
+    <>
+      {props.onChange ? (
+        <StyledAddress editable={{ onChange: props.onChange }} copyable={{ text: address }}>
+          <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
+            {displayAddress}
+          </a>
+        </StyledAddress>
+      ) : (
+        <StyledAddress copyable={{ text: address }}>
+          <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
+            {displayAddress}
+          </a>
+        </StyledAddress>
+      )}
+    </>
   );
 }

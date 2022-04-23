@@ -2,17 +2,23 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { ReactComponent as NimiLogo } from "../images/nimi-logo.svg";
+import LandingPage from "../views/Landing";
 import Account from "./Account";
 
 const HeaderWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 27px;
+  justify-content: center;
+  margin-top: 62px;
 `;
-const LeftSide = styled.div`
+// const LeftSide = styled.div`
+//   display: flex;
+//   gap: 25px;
+//   align-items: center;
+// `;
+const LandingPageWrapper = styled.div`
   display: flex;
-  gap: 25px;
-  align-items: center;
+  padding: 27px 90px;
+  justify-content: space-between;
 `;
 const NavigationText = styled.div`
   background: linear-gradient(154.32deg, #4368ea 0.48%, #c490dd 85.86%);
@@ -32,19 +38,28 @@ export default function Header({
   mainnetProvider,
   price,
   minimized,
+  location,
   web3Modal,
   loadWeb3Modal,
   logoutOfWeb3Modal,
   blockExplorer,
   isContract,
 }) {
-  return (
+  const isLanding = location.pathname === "/";
+  return isLanding ? (
     <HeaderWrapper>
-      <LeftSide>
+      {/* <LeftSide> */}
+
+      {/* <NavigationText>Overview</NavigationText>
+    <NavigationText>Features</NavigationText> */}
+      {/* </LeftSide> */}
+      <NimiLogo />
+    </HeaderWrapper>
+  ) : (
+    <LandingPageWrapper>
+      <NavLink to="/">
         <NimiLogo />
-        <NavigationText>Overview</NavigationText>
-        <NavigationText>Features</NavigationText>
-      </LeftSide>
+      </NavLink>
 
       <Account
         address={address}
@@ -57,6 +72,6 @@ export default function Header({
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         blockExplorer={blockExplorer}
       />
-    </HeaderWrapper>
+    </LandingPageWrapper>
   );
 }
