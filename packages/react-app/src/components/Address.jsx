@@ -37,6 +37,7 @@ export default function Address(props) {
   const { currentTheme } = useThemeSwitcher();
   const address = props.value || props.address;
   const ens = useLookupAddress(props.ensProvider, address);
+  console.log("sdhshdhsdhsdhsdhhds", ens);
   const ensSplit = ens && ens.split(".");
   const validEnsCheck = ensSplit && ensSplit[ensSplit.length - 1] === "eth";
   const etherscanLink = blockExplorerLink(address, props.blockExplorer);
