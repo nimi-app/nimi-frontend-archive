@@ -17,6 +17,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@apollo/client": "^3.3.21",
+    "@ensdomains/eth-ens-namehash": "^2.0.15",
+    "content-hash": "^2.5.2",
     "@apollo/react-hooks": "^4.0.0",
     "@eth-optimism/sdk": "^1.0.0",
     "@portis/web3": "^4.0.5",

@@ -1,7 +1,8 @@
 import { Button } from "antd";
-
+import nameHash from "@ensdomains/eth-ens-namehash";
 import { ethers } from "ethers";
 import React from "react";
+import contentHash from "content-hash";
 
 import useEnsDomains from "../hooks/useEnsDomains";
 
@@ -25,7 +26,7 @@ const abi = [
     type: "function",
   },
 ];
-function Home({ address }) {
+function Home({ address, userSigner }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
 
@@ -34,12 +35,14 @@ function Home({ address }) {
   console.log(domains, loadingState);
   console.log("yourLocalBalance", ethers);
   const asyncFunc = async () => {
-    console.log("heresdsdsd");
-    const provider = ethers.getDefaultProvider("mainnet");
+    console.log("user signer", userSigner);
 
-    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, provider);
-    console.log(contract);
-    await contract.setContenthash("someshit");
+    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
+    // console.log("hash", nameHash.hash(domains[1].name));
+    const node = nameHash.hash(domains[1].name);
+    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
+    console.log("ipfscontentHash", ipfsContentHash);
+    await contract.setContenthash(node, "0x" + ipfsContentHash);
   };
   return (
     <div>
