@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import contentHash from "content-hash";
 import { Address, Balance, Events } from "../components";
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
-import { fetchTwitterData } from "../hooks/TwitterData";
+import useTwitterData from "../hooks/useTwitterData";
 
 const abi = [
   {
@@ -241,7 +241,8 @@ const StyledButton = styled.button`
 
 export default function Template({ userSigner, title }) {
   const [input, setInput] = useState("");
-
+  const twitterData = useTwitterData(input);
+  console.log(twitterData);
   const asyncFunc = async () => {
     console.log("user signer", userSigner);
 
@@ -267,7 +268,7 @@ export default function Template({ userSigner, title }) {
           </TwitterText>
         </TwitterArea>
         <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
-        <StyledButton onClick={() => fetchTwitterData()}>Import from Twitter</StyledButton>
+        <StyledButton>Import from Twitter</StyledButton>
         <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>
       </LeftSide>
       <OuterContainer>
