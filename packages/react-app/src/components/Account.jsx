@@ -5,6 +5,8 @@ import { useThemeSwitcher } from "react-css-theme-switcher";
 import Address from "./Address";
 import Balance from "./Balance";
 import Wallet from "./Wallet";
+import styled from "styled-components";
+import { ReactComponent as ConnectLogo } from "../images/wallet-connect.svg";
 
 /** 
   ~ What it does? ~
@@ -41,7 +43,25 @@ import Wallet from "./Wallet";
   - Provide blockExplorer={blockExplorer}, click on address and get the link
               (ex. by default "https://etherscan.io/" or for xdai "https://blockscout.com/poa/xdai/")
 **/
-
+const ConnectButton = styled.button`
+  width: 195px;
+  height: 48px;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 25px;
+  /* left: 1143px;
+  top: 27px; */
+  font-family: "Baloo 2";
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0em;
+  display: flex;
+  border: transparent;
+  background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
+  border-radius: 30px;
+`;
 export default function Account({
   useBurner,
   address,
@@ -62,39 +82,38 @@ export default function Account({
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
       modalButtons.push(
-        <Button
+        <ConnectButton
           key="logoutbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
+          style={{ width: "100px;" }}
           shape="round"
           size="large"
           onClick={logoutOfWeb3Modal}
         >
-          logout
-        </Button>,
+          Logout
+        </ConnectButton>,
       );
     } else {
       modalButtons.push(
-        <Button
+        <ConnectButton
           key="loginbutton"
-          style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
           shape="round"
           size="large"
           /* type={minimized ? "default" : "primary"}     too many people just defaulting to MM and having a bad time */
           onClick={loadWeb3Modal}
         >
-          connect
-        </Button>,
+          <ConnectLogo /> Connect Wallet
+        </ConnectButton>,
       );
     }
   }
   const display = minimized ? (
     ""
   ) : (
-    <span>
+    <div>
       {web3Modal && web3Modal.cachedProvider ? (
         <>
           {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
-          <Balance address={address} provider={localProvider} price={price} />
+          {/* <Balance address={address} provider={localProvider} price={price} /> */}
           <Wallet
             address={address}
             provider={localProvider}
@@ -130,7 +149,7 @@ export default function Account({
       ) : (
         <></>
       )}
-    </span>
+    </div>
   );
 
   return (
