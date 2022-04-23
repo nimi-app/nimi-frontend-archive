@@ -1,8 +1,25 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import nameHash from "@ensdomains/eth-ens-namehash";
+import { ethers } from "ethers";
+import contentHash from "content-hash";
 import { Address, Balance, Events } from "../components";
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
 
+const abi = [
+  {
+    constant: false,
+    inputs: [
+      { internalType: "bytes32", name: "node", type: "bytes32" },
+      { internalType: "bytes", name: "hash", type: "bytes" },
+    ],
+    name: "setContenthash",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
 const OuterContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -220,8 +237,19 @@ const StyledButton = styled.button`
   background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   border-radius: 30px;
 `;
-export default function ExampleUI({ link, title }) {
+export default function ExampleUI({ userSigner, title }) {
   const [input, setInput] = useState("");
+  const [domain, setDomain] = useState("");
+  const asyncFunc = async () => {
+    console.log("user signer", userSigner);
+
+    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
+    // console.log("hash", nameHash.hash(domains[1].name));
+    const node = nameHash.hash(domain);
+    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
+    console.log("ipfscontentHash", ipfsContentHash);
+    await contract.setContenthash(node, "0x" + ipfsContentHash);
+  };
 
   return (
     <Wrapper>
@@ -234,6 +262,7 @@ export default function ExampleUI({ link, title }) {
         </TwitterArea>
         <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
         <StyledButton>Import from Twitter</StyledButton>
+        <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>
       </LeftSide>
       <OuterContainer>
         <ProfileContainer>

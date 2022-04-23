@@ -1,8 +1,6 @@
-import { Button, Input } from "antd";
-import nameHash from "@ensdomains/eth-ens-namehash";
-import { ethers } from "ethers";
+import { Button } from "antd";
+
 import React, { useState } from "react";
-import contentHash from "content-hash";
 
 import useEnsDomains from "../hooks/useEnsDomains";
 import styled from "styled-components";
@@ -121,26 +119,14 @@ function Home({ address, userSigner }) {
   const handleClick = ens => {
     window.open(`https://${ens}.link`);
   };
-  const [twitter, setTwitter] = useState("");
-  console.log(domains, loadingState);
-  console.log("yourLocalBalance", ethers);
-  const asyncFunc = async () => {
-    console.log("user signer", userSigner);
 
-    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
-    // console.log("hash", nameHash.hash(domains[1].name));
-    const node = nameHash.hash(domains[1].name);
-    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
-    console.log("ipfscontentHash", ipfsContentHash);
-    await contract.setContenthash(node, "0x" + ipfsContentHash);
-  };
   return (
     <div>
       <FlexWrapper>
         {!loadingState &&
           domains.map(item => {
             return (
-              <StyledCard onClick={() => setSelectedDomain(item.name)}>
+              <StyledCard>
                 <StyledDomainText>{item.name}</StyledDomainText>
                 <SetupButton>Set up a Nimi Profile</SetupButton>
                 <GoToText onClick={() => handleClick(item.name)}>Go to {item.name}</GoToText>
@@ -148,10 +134,6 @@ function Home({ address, userSigner }) {
             );
           })}
       </FlexWrapper>
-      <div>SelectedDomain:{selectedDomain}</div>
-      <Input.TextArea onChange={event => setTwitter(event)}>Twitter</Input.TextArea>
-      <div>Twiter name: {twitter}</div>
-      <Button onClick={asyncFunc}>Deploy to ipfs</Button>
     </div>
   );
 }
