@@ -1,4 +1,5 @@
 .App {
   text-align: center;
   padding-left: calc(100vw - 100%);
+  background-image: url("nimi-header-background.png");
 }
