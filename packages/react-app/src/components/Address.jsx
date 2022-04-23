@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Blockies from "react-blockies";
 import { useLookupAddress } from "eth-hooks/dapps/ens";
+import { ReactComponent as SmallNimi } from "../images/nimi-small.svg";
 
 // changed value={address} to address={address}
 
@@ -15,6 +16,10 @@ const Avatar = styled.div`
   background-color: white;
   background-size: cover;
   background-image: url("../images/nimi-small.svg");
+`;
+const StyledNimi = styled(SmallNimi)`
+  position: relative;
+  left: -10px;
 `;
 
 const StyledAddress = styled.div`
@@ -107,12 +112,14 @@ export default function Address(props) {
     <>
       {props.onChange ? (
         <StyledAddress editable={{ onChange: props.onChange }} copyable={{ text: address }}>
+          <StyledNimi />
           <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
             {displayAddress}
           </a>
         </StyledAddress>
       ) : (
         <StyledAddress copyable={{ text: address }}>
+          <StyledNimi />
           <a target="_blank" href={etherscanLink} rel="noopener noreferrer">
             {displayAddress}
           </a>
