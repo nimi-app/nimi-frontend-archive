@@ -1,11 +1,10 @@
-import { Button, Input } from "antd";
-import nameHash from "@ensdomains/eth-ens-namehash";
-import { ethers } from "ethers";
+import { Button } from "antd";
+
 import React, { useState } from "react";
-import contentHash from "content-hash";
 
 import useEnsDomains from "../hooks/useEnsDomains";
 import styled from "styled-components";
+import { NavLink, useHistory } from "react-router-dom";
 const FlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -115,44 +114,40 @@ const abi = [
 function Home({ address, userSigner }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
-
+  const history = useHistory();
   console.log("address in home", address);
   const { domains, loadingState } = useEnsDomains(address);
-  const [selectedDomain, setSelectedDomain] = useState(null);
+
   const handleClick = ens => {
     window.open(`https://${ens}.link`);
   };
-  const [twitter, setTwitter] = useState("");
-  console.log(domains, loadingState);
-  console.log("yourLocalBalance", ethers);
-  const asyncFunc = async () => {
-    console.log("user signer", userSigner);
 
-    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
-    // console.log("hash", nameHash.hash(domains[1].name));
-    const node = nameHash.hash(domains[1].name);
-    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
-    console.log("ipfscontentHash", ipfsContentHash);
-    await contract.setContenthash(node, "0x" + ipfsContentHash);
-  };
   return (
     <div>
       <FlexWrapper>
         {!loadingState &&
           domains.map(item => {
             return (
-              <StyledCard onClick={() => setSelectedDomain(item.name)}>
+              <StyledCard>
                 <StyledDomainText>{item.name}</StyledDomainText>
-                <SetupButton>Set up a Nimi Profile</SetupButton>
+                {/* <NavLink to={`/template-preview/id:${item.name}`}> */}
+                <SetupButton
+                  onClick={() =>
+                    history.push({
+                      pathname: "/template-preview",
+                      search: `${item.name}`,
+                    })
+                  }
+                >
+                  Set up a Nimi Profile
+                </SetupButton>
+                {/* </NavLink> */}
+
                 <GoToText onClick={() => handleClick(item.name)}>Go to {item.name}</GoToText>
               </StyledCard>
             );
           })}
       </FlexWrapper>
-      <div>SelectedDomain:{selectedDomain}</div>
-      <Input.TextArea onChange={event => setTwitter(event)}>Twitter</Input.TextArea>
-      <div>Twiter name: {twitter}</div>
-      <Button onClick={asyncFunc}>Deploy to ipfs</Button>
     </div>
   );
 }

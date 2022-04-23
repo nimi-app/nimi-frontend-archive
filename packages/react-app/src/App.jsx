@@ -261,8 +261,6 @@ function App(props) {
         </Menu.Item>
         <Menu.Item key="/landing">
           <Link to="/landing">Landing</Link>
-        <Menu.Item key="/template">
-          <Link to="/template">Template</Link>
         </Menu.Item>
         <Menu.Item key="/mainnetdai">
           <Link to="/mainnetdai">Mainnet DAI</Link>
@@ -299,26 +297,13 @@ function App(props) {
             contractConfig={contractConfig}
           />
         </Route>
-        <Route path="/hints">
-          <Hints
-            address={address}
-            yourLocalBalance={yourLocalBalance}
-            mainnetProvider={mainnetProvider}
-            price={price}
-          />
-        </Route>
-        <Route path="/template">
+        <Route path="/template-preview">
           <Template
             address={address}
             userSigner={userSigner}
-            mainnetProvider={mainnetProvider}
-            localProvider={localProvider}
             yourLocalBalance={yourLocalBalance}
+            mainnetProvider={mainnetProvider}
             price={price}
-            tx={tx}
-            writeContracts={writeContracts}
-            readContracts={readContracts}
-            purpose={purpose}
           />
         </Route>
         <Route path="/">
