@@ -9,6 +9,7 @@ const FlexWrapper = styled.div`
   flex-direction: row;
   gap: 19px;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 const StyledDomainText = styled.div`
   font-family: "Baloo 2";
