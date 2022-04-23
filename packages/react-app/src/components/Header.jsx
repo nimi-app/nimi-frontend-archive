@@ -57,7 +57,9 @@ export default function Header({
     </HeaderWrapper>
   ) : (
     <LandingPageWrapper>
-      <NimiLogo />
+      <NavLink to="/">
+        <NimiLogo />
+      </NavLink>
 
       <Account
         address={address}

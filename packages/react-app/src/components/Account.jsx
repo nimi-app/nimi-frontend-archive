@@ -84,17 +84,9 @@ export default function Account({
 
   const modalButtons = [];
   if (web3Modal) {
-    if (!web3Modal.cachedProvider) {
-      // modalButtons.push(
-      //   <ConnectButton
-      //     key="logoutbutton"
-      //     style={{ width: "100px;" }}
-      //     shape="round"
-      //     size="large"
-      //     onClick={logoutOfWeb3Modal}
-      //   >
-      //     Logout
-      //   </ConnectButton>,
+    if (web3Modal.cachedProvider) {
+      modalButtons.push(<Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />);
+    } else {
       modalButtons.push(
         <ConnectButton
           key="loginbutton"
@@ -108,46 +100,46 @@ export default function Account({
       );
     }
   }
-  const display = minimized ? (
-    ""
-  ) : (
-    <div>
-      {web3Modal && web3Modal.cachedProvider ? (
-        <>{address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}</>
-      ) : useBurner ? (
-        ""
-      ) : isContract ? (
-        <>
-          {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
+  // const display = minimized ? (
+  //   ""
+  // ) : (
+  //   <div>
+  //     {web3Modal && web3Modal.cachedProvider ? (
+  //       <>{address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}</>
+  //     ) : useBurner ? (
+  //       ""
+  //     ) : isContract ? (
+  //       <>
+  //         {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
 
-          <Balance address={address} provider={localProvider} price={price} />
-        </>
-      ) : (
-        ""
-      )}
-      {useBurner && web3Modal && !web3Modal.cachedProvider ? (
-        <>
-          <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
+  //         <Balance address={address} provider={localProvider} price={price} />
+  //       </>
+  //     ) : (
+  //       ""
+  //     )}
+  //     {useBurner && web3Modal && !web3Modal.cachedProvider ? (
+  //       <>
+  //         <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
 
-          <Balance address={address} provider={localProvider} price={price} />
-          <Wallet
-            address={address}
-            provider={localProvider}
-            signer={userSigner}
-            ensProvider={mainnetProvider}
-            price={price}
-            color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          />
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
+  //         <Balance address={address} provider={localProvider} price={price} />
+  //         <Wallet
+  //           address={address}
+  //           provider={localProvider}
+  //           signer={userSigner}
+  //           ensProvider={mainnetProvider}
+  //           price={price}
+  //           color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
+  //         />
+  //       </>
+  //     ) : (
+  //       <></>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <AccountWrapper>
-      {display}
+      {/* {display} */}
       {modalButtons}
     </AccountWrapper>
   );

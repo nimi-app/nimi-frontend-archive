@@ -69,7 +69,6 @@ const SmallText = styled.div`
 `;
 
 export default function LandingPage({ link, title }) {
-  const [newPurpose, setNewPurpose] = useState("loading...");
   return (
     <HeroText>
       <PreHero>This is a smaller title. It can be longer.</PreHero>
