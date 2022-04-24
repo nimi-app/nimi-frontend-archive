@@ -270,11 +270,13 @@ export default function Template({ userSigner, address }) {
     const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
     // console.log("hash", nameHash.hash(domains[1].name));
     let urlSearchParams = window.location.search.substring(1);
-    console.log("search", urlSearchParams);
 
-    console.log("foo", urlSearchParams);
-    const node = nameHash.hash(urlSearchParams.substring(1));
+    console.log(urlSearchParams);
+    const node = nameHash.hash(urlSearchParams);
+    console.log("mode", node);
+
     const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
+    console.log(ipfsContentHash);
     console.log("ipfscontentHash", ipfsContentHash);
     await contract.setContenthash(node, "0x" + ipfsContentHash);
   };
