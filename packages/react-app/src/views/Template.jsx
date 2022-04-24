@@ -3,10 +3,12 @@ import styled from "styled-components";
 import nameHash from "@ensdomains/eth-ens-namehash";
 import { ethers } from "ethers";
 import contentHash from "content-hash";
-import { Address, Balance, Events } from "../components";
+
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
+import { ReactComponent as SmallTwitterLogo } from "../images/small-twitter.svg";
+import { ReactComponent as Telegram } from "../images/telegram.svg";
 import useTwitterData from "../hooks/useTwitterData";
-import { LoadingOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const abi = [
   {
@@ -30,10 +32,16 @@ const OuterContainer = styled.div`
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 1000px;
+
   width: 375px;
   background-color: white;
   align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 5px 24px rgba(138, 143, 234, 0.12);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 25px;
 `;
 
 const ProfilePicContainer = styled.div`
@@ -52,8 +60,7 @@ const PicBackgroundTop = styled.div`
   width: 375px;
 `;
 
-const ProfilePic = styled.div`
-  background-image: url("stani-test.png");
+const ProfilePic = styled.img`
   background-position: center, center;
   background-size: cover;
   border: 8px solid #ffffff;
@@ -120,12 +127,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 36px;
 `;
 const ContentListTile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
+  gap: 8px;
   padding: 38px 36px;
   background: #ffffff;
   box-shadow: 0px 8px 35px #e9e0ff;
@@ -139,14 +148,27 @@ const TitleElement = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 28px;
+  text-align: start;
   line-height: 100%;
 `;
 
-const LineItemElement = styled.div`
+const TwitterElement = styled.div`
   display: flex;
   font-family: "Baloo 2";
   font-style: normal;
   font-weight: 400;
+  gap: 8px;
+  font-size: 18px;
+  line-height: 100%;
+  align-items: center;
+  color: #2f80ed;
+`;
+const EmailElement = styled.div`
+  display: flex;
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-weight: 400;
+  gap: 8px;
   font-size: 18px;
   line-height: 100%;
   align-items: center;
@@ -193,7 +215,6 @@ const TwitterText = styled.div`
   margin-left: 18px;
   /* or 29px */
   text-align: left;
-
   display: flex;
   align-items: center;
 
@@ -239,26 +260,45 @@ const StyledButton = styled.button`
   background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   border-radius: 30px;
 `;
+const StyledTelegramInput = styled.input``;
 
-export default function Template({ userSigner, title }) {
+export default function Template({ userSigner, address }) {
   const [input, setInput] = useState("");
+  const [telegram, setTelegram] = useState("");
   const { loadTwitterData, twitterData, loading } = useTwitterData(input);
   console.log(twitterData);
   const asyncFunc = async () => {
     console.log("user signer", userSigner);
-
-    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
-    // console.log("hash", nameHash.hash(domains[1].name));
     let urlSearchParams = window.location.search.substring(1);
-    console.log("search", urlSearchParams);
+    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
+    let responseHash;
+    await axios
+      .post(`https://api.nimi.dev/twitter-info?username`, {
+        // telegram: telegram,
+        displayName: twitterData.name,
+        description: twitterData.description,
+        profileImageUrl: twitterData.profileImageUrl,
+        ensAddress: address,
+        ensName: urlSearchParams,
+      })
+      .then(response => {
+        responseHash = response.data.responseHash;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // console.log("hash", nameHash.hash(domains[1].name));
 
-    console.log("foo", urlSearchParams);
-    const node = nameHash.hash(urlSearchParams.substring(1));
-    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
+    console.log(urlSearchParams);
+    const node = nameHash.hash(urlSearchParams);
+    console.log("mode", node);
+
+    const ipfsContentHash = contentHash.fromIpfs(responseHash);
+    console.log(ipfsContentHash);
     console.log("ipfscontentHash", ipfsContentHash);
     await contract.setContenthash(node, "0x" + ipfsContentHash);
   };
-
+  let displayAddress = address?.substr(0, 5) + "..." + address?.substr(-4);
   return (
     <Wrapper>
       <LeftSide>
@@ -269,35 +309,45 @@ export default function Template({ userSigner, title }) {
           </TwitterText>
         </TwitterArea>
         <StyledInput type="text" placeholder="@ Your Twitter" value={input} onInput={e => setInput(e.target.value)} />
-        <StyledButton onClick={loadTwitterData}>Import from Twitter</StyledButton>
-        {loading && twitterData !== undefined && <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>}
+        {twitterData === undefined && <StyledButton onClick={loadTwitterData}>Import from Twitter</StyledButton>}
+        {!loading && twitterData !== undefined && <StyledButton onClick={asyncFunc}>Deploy to ipfs</StyledButton>}
       </LeftSide>
       <OuterContainer>
-        <ProfileContainer>
-          <ProfilePicContainer>
-            <PicBackgroundTop />
-            <ProfilePic />
-          </ProfilePicContainer>
-          <ProfileName>Stani.eth (3,3)</ProfileName>
-          <AddressBar>
-            stani.eth
-            <VerticalSeparator>|</VerticalSeparator>
-            <ETHAddress>0x52...D4D4</ETHAddress>
-          </AddressBar>
-          <ProfileDesc>
-            Founder @LensProtocol @AaveAaave web3 investoooorrr - Contributor to @PleasrDAO @FlamingoDAO @VENTURE_DAO -
-            Opinions my own - Google 1998 vibes
-          </ProfileDesc>
-          <ContentListTile>
-            <TitleElement>Socials</TitleElement>
-            <LineItemElement>Stani Kuchelov</LineItemElement>
-          </ContentListTile>
-          <ContentListTile>
-            <TitleElement>Addresses</TitleElement>
-            <LineItemElement>0x477d239...ba36917649</LineItemElement>
-          </ContentListTile>
-          <Footer />
-        </ProfileContainer>
+        {twitterData !== undefined && (
+          <ProfileContainer>
+            <ProfilePicContainer>
+              <PicBackgroundTop />
+              <ProfilePic src={twitterData.profileImageUrl} />
+            </ProfilePicContainer>
+            <ProfileName>{twitterData.name}</ProfileName>
+            <AddressBar>
+              {twitterData.username}
+              <VerticalSeparator>|</VerticalSeparator>
+              <ETHAddress>{displayAddress}</ETHAddress>
+            </AddressBar>
+            <ProfileDesc>{twitterData.description}</ProfileDesc>
+            <ContentListTile>
+              <TitleElement>Socials</TitleElement>
+              <TwitterElement>
+                <SmallTwitterLogo />
+                {twitterData.username}
+              </TwitterElement>
+              <EmailElement>
+                <Telegram />
+                <StyledTelegramInput
+                  type="text"
+                  placeholder="TelegramHandle"
+                  onInput={e => setTelegram(e.target.value)}
+                />
+              </EmailElement>
+            </ContentListTile>
+            <ContentListTile>
+              <TitleElement>Addresses</TitleElement>
+              {/* <LineItemElement>0x477d239...ba36917649</LineItemElement> */}
+            </ContentListTile>
+            <Footer />
+          </ProfileContainer>
+        )}
       </OuterContainer>
     </Wrapper>
   );
