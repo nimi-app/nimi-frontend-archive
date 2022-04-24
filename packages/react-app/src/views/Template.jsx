@@ -6,8 +6,9 @@ import contentHash from "content-hash";
 
 import { ReactComponent as TwitterLogo } from "../images/twitter-icon.svg";
 import { ReactComponent as SmallTwitterLogo } from "../images/small-twitter.svg";
-import { ReactComponent as EmailLogo } from "../images/email-icon.svg";
+import { ReactComponent as Telegram } from "../images/telegram.svg";
 import useTwitterData from "../hooks/useTwitterData";
+import axios from "axios";
 
 const abi = [
   {
@@ -259,23 +260,40 @@ const StyledButton = styled.button`
   background: linear-gradient(111.35deg, #4368ea -25.85%, #c490dd 73.38%);
   border-radius: 30px;
 `;
+const StyledTelegramInput = styled.input``;
 
 export default function Template({ userSigner, address }) {
   const [input, setInput] = useState("");
+  const [telegram, setTelegram] = useState("");
   const { loadTwitterData, twitterData, loading } = useTwitterData(input);
   console.log(twitterData);
   const asyncFunc = async () => {
     console.log("user signer", userSigner);
-
-    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
-    // console.log("hash", nameHash.hash(domains[1].name));
     let urlSearchParams = window.location.search.substring(1);
+    const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
+    let responseHash;
+    await axios
+      .post(`https://api.nimi.dev/twitter-info?username`, {
+        // telegram: telegram,
+        displayName: twitterData.name,
+        description: twitterData.description,
+        profileImageUrl: twitterData.profileImageUrl,
+        ensAddress: address,
+        ensName: urlSearchParams,
+      })
+      .then(response => {
+        responseHash = response.data.responseHash;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // console.log("hash", nameHash.hash(domains[1].name));
 
     console.log(urlSearchParams);
     const node = nameHash.hash(urlSearchParams);
     console.log("mode", node);
 
-    const ipfsContentHash = contentHash.fromIpfs("QmPcKYS1r1BW1PLg6vDFsY9qYm9Xw21cj3ykzFWydCrAft");
+    const ipfsContentHash = contentHash.fromIpfs(responseHash);
     console.log(ipfsContentHash);
     console.log("ipfscontentHash", ipfsContentHash);
     await contract.setContenthash(node, "0x" + ipfsContentHash);
@@ -315,7 +333,12 @@ export default function Template({ userSigner, address }) {
                 {twitterData.username}
               </TwitterElement>
               <EmailElement>
-                <EmailLogo />
+                <Telegram />
+                <StyledTelegramInput
+                  type="text"
+                  placeholder="TelegramHandle"
+                  onInput={e => setTelegram(e.target.value)}
+                />
               </EmailElement>
             </ContentListTile>
             <ContentListTile>
