@@ -273,16 +273,17 @@ export default function Template({ userSigner, address }) {
     const contract = new ethers.Contract("0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41", abi, userSigner);
     let responseHash;
     await axios
-      .post(`https://api.nimi.dev/twitter-info?username`, {
-        // telegram: telegram,
+      .post(`https://api.nimi.dev/profiles/create`, {
         displayName: twitterData.name,
         description: twitterData.description,
         profileImageUrl: twitterData.profileImageUrl,
         ensAddress: address,
         ensName: urlSearchParams,
+        socials: [],
+        addresses: [],
       })
-      .then(response => {
-        responseHash = response.data.responseHash;
+      .then(({ data }) => {
+        responseHash = data.data.IpfsHash;
       })
       .catch(error => {
         console.log(error);
