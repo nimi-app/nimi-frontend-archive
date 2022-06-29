@@ -1,3 +1,7 @@
+# Moved to [nimi-app/app](https://github.com/nimi-app/app)!
+
+This repo has been archived. It was submited for the ETHAmsterdam 2022 hackathon. New repo is [nimi-app/app](https://github.com/nimi-app/app)!
+
 # 🏗 Scaffold-ETH
 
 > everything you need to build on Ethereum! 🚀
